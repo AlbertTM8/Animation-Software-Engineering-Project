@@ -1,6 +1,6 @@
 # Albert Jian Sheng Tan-Mulligan Assigment
 ## Project Topic/Proposal - Curvenets
-This Project's goal is to implement the "Curvenet" rigging representation, described in the paper in Section 3 (De Geos, 2022). This project will not attempt the mesh transformation or any of the Curvenet propagation. The initial goal is to define a curvenet representing a simple cylinder, box and sphere, which can then be transformed and deformed. The representation should include interesection normals and width handles, which are then used to control the deformation gradient. As an extension to the project if time permits, I  would like to extend the project to create a flexible solver that computes the curvenet information based on input splines. 
+This Project's goal is to implement the "Curvenet" rigging representation, described in the paper in Section 3 (De Geos, 2022). This project will not attempt the mesh transformation or any of the Curvenet propagation. The initial goal is to define a curvenet representing a simple cylinder, box and sphere, which can then be transformed and deformed. The representation should include interesection handles or sliders, which are then used to control the deformation gradient. As an extension to the project if time permits, I  would like to extend the project to create a flexible solver that computes the curvenet information based on input splines. 
 
 ##Used Libraries
 I should not reqiure any addition libraries other than the provided libraries i.e. the NGL library, C++ Standard Library, FMT, QT and GTest.
