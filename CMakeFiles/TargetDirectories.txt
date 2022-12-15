@@ -1,0 +1,7 @@
+/transfer/Albert2022/2022/ase-assignment-AlbertTM8/CMakeFiles/rebuild_cache.dir
+/transfer/Albert2022/2022/ase-assignment-AlbertTM8/CMakeFiles/edit_cache.dir
+/transfer/Albert2022/2022/ase-assignment-AlbertTM8/CMakeFiles/test.dir
+/transfer/Albert2022/2022/ase-assignment-AlbertTM8/CMakeFiles/CurveNet.dir
+/transfer/Albert2022/2022/ase-assignment-AlbertTM8/CMakeFiles/MathTest.dir
+/transfer/Albert2022/2022/ase-assignment-AlbertTM8/CMakeFiles/CurveNet_autogen.dir
+/transfer/Albert2022/2022/ase-assignment-AlbertTM8/CMakeFiles/MathTest_autogen.dir
