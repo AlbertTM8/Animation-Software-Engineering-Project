@@ -8,7 +8,11 @@
 class Segment
 {
 public:
+<<<<<<< HEAD
     Segment(std::pair<ngl::Vec3, ngl::Vec3> _endpoints, float _arclength );
+=======
+    Segment(std::pair<ngl::Vec3, ngl::Vec3> _endpoints, float _arclength, float _width, std::pair<ngl::Vec3, ngl::Vec3> normals, std::pair<ngl::Vec3, ngl::Vec3> _tangents);
+>>>>>>> 147266053939b042db250a79a0f0cc6fdf47bc02
     std::pair<ngl::Vec3, ngl::Vec3> getEndpoints() const;
     void setEndpoint(ngl::Vec3 _endpoint, int _index);
 

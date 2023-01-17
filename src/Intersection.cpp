@@ -1,5 +1,10 @@
 #include "Intersection.h"
+<<<<<<< HEAD
  engths,  ngl::Vec3 _location) : m_tangents {_tangents}, m_lengths {_lengths}, location {_location}{
+=======
+
+Intersection::Intersection(std::vector<ngl::Vec3> _tangents, std::vector<float> _lengths,  ngl::Vec3 _location) : m_tangents {_tangents}, m_lengths {_lengths}, location {_location}{
+>>>>>>> 147266053939b042db250a79a0f0cc6fdf47bc02
     m_corners.resize(_tangents.size());
     m_normals.resize(_tangents.size());
     for(int i = 0; i< m_corners.size(); ++i){

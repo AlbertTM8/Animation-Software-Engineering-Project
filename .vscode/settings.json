@@ -1,6 +1,7 @@
 {
     "files.associations": {
         "condition_variable": "cpp",
+<<<<<<< HEAD
         "thread": "cpp",
         "algorithm": "cpp",
         "any": "cpp",
@@ -78,4 +79,8 @@
         "xutility": "cpp"
     },
     "C_Cpp.errorSquiggles": "disabled"
+=======
+        "thread": "cpp"
+    }
+>>>>>>> 147266053939b042db250a79a0f0cc6fdf47bc02
 }
