@@ -2,19 +2,12 @@
 #include <QGuiApplication>
 
 #include "NGLScene.h"
-<<<<<<< HEAD
 #include "Mesh.h"
-=======
-#include "Curve.h"
->>>>>>> 147266053939b042db250a79a0f0cc6fdf47bc02
 #include <ngl/NGLInit.h>
 #include <ngl/VAOPrimitives.h>
 #include <ngl/ShaderLib.h>
 #include <iostream>
-<<<<<<< HEAD
 int axis;
-=======
->>>>>>> 147266053939b042db250a79a0f0cc6fdf47bc02
 
 NGLScene::NGLScene()
 {
@@ -58,7 +51,6 @@ void NGLScene::initializeGL()
   ngl::ShaderLib::use(ngl::nglColourShader);
   ngl::ShaderLib::setUniform("Colour", 1.0f, 1.0f, 1.0f, 1.0f);
      
-<<<<<<< HEAD
   mesh.addPoint(ngl::Vec3(1.00005519f, 1.0f, 0.0f), 0);
   mesh.addPoint(ngl::Vec3(0.99873585f, 1.0f, 0.55342686f), 0);
   mesh.addPoint(ngl::Vec3(0.55342686f, 1.0f, 0.99873585f), 0);
@@ -110,60 +102,6 @@ void NGLScene::initializeGL()
   mesh.calculateIntersections();
   mesh.calcLength();
   mesh.setup(200.0f);
-=======
-  top_curve.addPoint(ngl::Vec3(1.00005519f, 1.0f, 0.0f), 0);
-  top_curve.addPoint(ngl::Vec3(0.99873585f, 1.0f, 0.55342686f), 0);
-  top_curve.addPoint(ngl::Vec3(0.55342686f, 1.0f, 0.99873585f), 0);
-  top_curve.addPoint(ngl::Vec3(0.0f, 1.0f, 1.00005519f), 0);
-  top_curve.addPoint(ngl::Vec3(0.0f, 1.0f, 1.00005519f), 1);
-  top_curve.addPoint(ngl::Vec3(-0.55342686f, 1.0f,  0.99873585f), 1);
-  top_curve.addPoint(ngl::Vec3(-0.99873585f, 1.0f,  0.55342686f), 1);
-  top_curve.addPoint(ngl::Vec3(-1.00005519f, 1.0f,  0.0f), 1);
-  top_curve.addPoint(ngl::Vec3(-1.00005519f, 1.0f,  0.0f), 2);
-  top_curve.addPoint(ngl::Vec3(-0.99873585f, 1.0f,  -0.55342686f), 2);
-  top_curve.addPoint(ngl::Vec3(-0.55342686f, 1.0f,  -0.99873585f), 2);
-  top_curve.addPoint(ngl::Vec3(0.0f, 1.0f,  -1.00005519f), 2);
-  top_curve.addPoint(ngl::Vec3(0.0f, 1.0f,  -1.00005519f), 3);
-  top_curve.addPoint(ngl::Vec3(0.55342686f, 1.0f,  -0.99873585f), 3);
-  top_curve.addPoint(ngl::Vec3(0.99873585f, 1.0f, -0.55342686f), 3);
-  top_curve.addPoint(ngl::Vec3(1.00005519f, 1.0f, 0.0f), 3);
-  side_curve.addPoint(ngl::Vec3(1.00005519f, 1.0f,  0.0f), 0);
-  side_curve.addPoint(ngl::Vec3(1.00005519f, 1.0f,  0.0f), 0);
-  side_curve.addPoint(ngl::Vec3(1.00005519f, 0.0f, 0.0f), 0);
-  side_curve.addPoint(ngl::Vec3(1.00005519f, 0.0f, 0.0f), 0);
-  side_curve.addPoint(ngl::Vec3(-1.00005519f, 1.0f,  0.0f), 1);
-  side_curve.addPoint(ngl::Vec3(-1.00005519f, 1.0f,  0.0f), 1);
-  side_curve.addPoint(ngl::Vec3(-1.00005519f, 0.0f, 0.0f), 1);
-  side_curve.addPoint(ngl::Vec3(-1.00005519f, 0.0f, 0.0f), 1);
-  side_curve.addPoint(ngl::Vec3(0.0, 1.0f,  1.00005519f), 2);
-  side_curve.addPoint(ngl::Vec3(0.0, 1.0f,  1.00005519f), 2);
-  side_curve.addPoint(ngl::Vec3(0.0f, 0.0f,1.00005519f), 2);
-  side_curve.addPoint(ngl::Vec3(0.0f, 0.0f, 1.00005519f), 2);
-  side_curve.addPoint(ngl::Vec3(0.0, 1.0f,  -1.00005519f), 3);
-  side_curve.addPoint(ngl::Vec3(0.0, 1.0f,  -1.00005519f), 3);
-  side_curve.addPoint(ngl::Vec3(0.0f, 0.0f,-1.00005519f), 3);
-  side_curve.addPoint(ngl::Vec3(0.0f, 0.0f, -1.00005519f), 3);
-  bot_curve.addPoint(ngl::Vec3(1.00005519f, 0.0f, 0.0f), 0);
-  bot_curve.addPoint(ngl::Vec3(0.99873585f, 0.0f, 0.55342686f), 0);
-  bot_curve.addPoint(ngl::Vec3(0.55342686f, 0.0f, 0.99873585f), 0);
-  bot_curve.addPoint(ngl::Vec3(0.0f, 0.0f, 1.00005519f), 0);
-  bot_curve.addPoint(ngl::Vec3(0.0f, 0.0f, 1.00005519f), 1);
-  bot_curve.addPoint(ngl::Vec3(-0.55342686f, 0.0f,  0.99873585f), 1);
-  bot_curve.addPoint(ngl::Vec3(-0.99873585f, 0.0f,  0.55342686f), 1);
-  bot_curve.addPoint(ngl::Vec3(-1.00005519f, 0.0f,  0.0f), 1);
-  bot_curve.addPoint(ngl::Vec3(-1.00005519f, 0.0f,  0.0f), 2);
-  bot_curve.addPoint(ngl::Vec3(-0.99873585f, 0.0f,  -0.55342686f), 2);
-  bot_curve.addPoint(ngl::Vec3(-0.55342686f, 0.0f,  -0.99873585f), 2);
-  bot_curve.addPoint(ngl::Vec3(0.0f, 0.0f,  -1.00005519f), 2);
-  bot_curve.addPoint(ngl::Vec3(0.0f, 0.0f,  -1.00005519f), 3);
-  bot_curve.addPoint(ngl::Vec3(0.55342686f, 0.0f,  -0.99873585f), 3);
-  bot_curve.addPoint(ngl::Vec3(0.99873585f, 0.0f, -0.55342686f), 3);
-  bot_curve.addPoint(ngl::Vec3(1.00005519f, 0.0f, 0.0f), 3);
-
-  top_curve.setup(200.0f);
-  side_curve.setup(200.0f);
-  bot_curve.setup(200.0f);
->>>>>>> 147266053939b042db250a79a0f0cc6fdf47bc02
 
 }
 
@@ -190,16 +128,7 @@ void NGLScene::paintGL()
   m_mouseGlobalTX.m_m[3][1] = m_modelPos.m_y;
   m_mouseGlobalTX.m_m[3][2] = m_modelPos.m_z;
   loadMatricesToShader();
-<<<<<<< HEAD
   mesh.draw();
-=======
-
-  top_curve.draw();
-  side_curve.draw();
-  bot_curve.draw();
-
-
->>>>>>> 147266053939b042db250a79a0f0cc6fdf47bc02
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -261,10 +190,6 @@ void NGLScene::mousePressEvent(QMouseEvent *_event)
     m_win.origYPos = position.y();
     m_win.translate = true;
   }
-<<<<<<< HEAD
-
-=======
->>>>>>> 147266053939b042db250a79a0f0cc6fdf47bc02
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -310,7 +235,6 @@ void NGLScene::keyPressEvent(QKeyEvent *_event)
   case Qt::Key_Escape:
     QGuiApplication::exit(EXIT_SUCCESS);
     break;
-<<<<<<< HEAD
   case Qt::Key_W:
     mesh.translate(0.0f,0.1f, 0.0f);
     mesh.resetup(200.0f);
@@ -346,23 +270,6 @@ void NGLScene::keyPressEvent(QKeyEvent *_event)
   case Qt::Key_E:
     mesh.rotate(-0.1f, axis);
     mesh.resetup(200.0f);
-=======
-  // turn on wirframe rendering
-  case Qt::Key_W:
-    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-    break;
-  // turn off wire frame
-  case Qt::Key_S:
-    glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-    break;
-  // show full screen
-  case Qt::Key_F:
-    showFullScreen();
-    break;
-  // show windowed
-  case Qt::Key_N:
-    showNormal();
->>>>>>> 147266053939b042db250a79a0f0cc6fdf47bc02
     break;
   default:
     break;

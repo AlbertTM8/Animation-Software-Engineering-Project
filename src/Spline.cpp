@@ -1,5 +1,4 @@
 #include "Spline.h"
-<<<<<<< HEAD
 #include <iostream>
 Spline::Spline(std::shared_ptr<ngl::BezierCurve> _spline){
     m_spline =  _spline;
@@ -130,11 +129,4 @@ std::shared_ptr<Segment> Spline::getSeg(ngl::Vec3 _position){
             return std::make_shared<Segment>(m_segments[counter]);
         }
     }
-=======
-
-Spline::Spline(){
-}
-Spline::Spline(std::unique_ptr<ngl::BezierCurve> _spline){
-    m_spline =  std::move(_spline);
->>>>>>> 147266053939b042db250a79a0f0cc6fdf47bc02
 }
