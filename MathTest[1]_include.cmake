@@ -1,0 +1,5 @@
+if(EXISTS "/transfer/Albert2022/2022/ase-assignment-AlbertTM8/MathTest[1]_tests.cmake")
+  include("/transfer/Albert2022/2022/ase-assignment-AlbertTM8/MathTest[1]_tests.cmake")
+else()
+  add_test(MathTest_NOT_BUILT MathTest_NOT_BUILT)
+endif()

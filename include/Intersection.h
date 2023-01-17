@@ -2,6 +2,7 @@
 #define Intersection_H_
 
 #include <cstddef>
+#include <iostream>
 #include <vector>
 #include <utility>
 #include <ngl/Vec3.h>
@@ -25,13 +26,14 @@ public:
 
     std::vector<std::pair<ngl::Vec3, ngl::Vec3>> getNorms() const;
     void setNorm(ngl::Vec3 _corner, int _index, bool _ind);
+    void setNorm(ngl::Vec3 _corner1, ngl::Vec3 _corner2, int _index);
 
 private:
     ngl::Vec3 location;
     std::vector<ngl::Vec3> m_tangents;
     std::vector<float> m_lengths;
     std::vector<Corner> m_corners;
-    // std::vector<std::pair<ngl::Vec3, ngl::Vec3>> m_normals;
+    std::vector<std::pair<ngl::Vec3, ngl::Vec3>> m_normals;
 };
 
 #endif
