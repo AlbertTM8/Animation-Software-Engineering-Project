@@ -77,11 +77,11 @@ void Curve::draw(){
         ngl::ShaderLib::setUniform("Colour", 1.0f, 1.0f, 1.0f, 1.0f);
         m_splines[i]->draw();
         glPointSize(4);
-        // ngl::ShaderLib::setUniform("Colour", 0.0f, 1.0f, 0.0f, 1.0f);
-        // m_splines[i]->drawControlPoints();
-        // glPointSize(1);
-        // ngl::ShaderLib::setUniform("Colour", 1.0f, 0.0f, 0.0f, 1.0f);
-        // m_splines[i]->drawHull();
+        ngl::ShaderLib::setUniform("Colour", 0.0f, 1.0f, 0.0f, 1.0f);
+        m_splines[i]->drawControlPoints();
+        glPointSize(1);
+        ngl::ShaderLib::setUniform("Colour", 1.0f, 0.0f, 0.0f, 1.0f);
+        m_splines[i]->drawHull();
     }
 }
 
@@ -172,7 +172,8 @@ void Curve::translate(float _x, float _y, float _z){
         updateIntersections(i);
         }
         for(int i = 4; i<8; ++i){
-        followMiddlePoints(i);
+        centerMiddlePoints(i);
+        bulgeLines(i);
         }
 }
 
@@ -310,17 +311,14 @@ void Curve::followMiddlePoints(int _index){
         ngl::Vec3 endPoint;
         ngl::Vec3 startPoint;
         std::vector<ngl::Vec3>controlPoints;
-
             controlPoints = m_splines[_index]->getControlPoints();
-            startPoint = controlPoints[0];
-            endPoint = controlPoints[3];
             std::shared_ptr<ngl::BezierCurve> placeholder = std::make_shared<ngl::BezierCurve>(); 
-            ngl::Vec3 secondPoint = m_splines[_index]->getPointOnCurve(0.33f);
-            ngl::Vec3 thirdPoint = m_splines[_index]->getPointOnCurve(0.67f);
-            placeholder->addPoint(startPoint);
+            ngl::Vec3 secondPoint = m_splines[_index]->getPointOnCurve(0.25f);
+            ngl::Vec3 thirdPoint = m_splines[_index]->getPointOnCurve(0.75f);
+            placeholder->addPoint(controlPoints[0]);
             placeholder->addPoint(secondPoint);
             placeholder->addPoint(thirdPoint);
-            placeholder->addPoint(endPoint);
+            placeholder->addPoint(controlPoints[3]);
             m_splines[_index] = placeholder;
 }
 
@@ -330,5 +328,73 @@ void Curve::straightenSides(){
 for(int i = 4; i<8; ++i){
     centerMiddlePoints(i);
 }
+
+}
+
+
+bool Curve::checkShorter(int _index){
+
+    float length = 0.0f;
+    for(float i = 0; i<0.999; i=i+0.01f){
+        ngl::Vec3 first = m_splines[_index]->getPointOnCurve(i);
+        ngl::Vec3 second = m_splines[_index]->getPointOnCurve(i+0.01f);
+        length += std::sqrt(((first.m_x-second.m_x)*(first.m_x-second.m_x))+ ((first.m_y-second.m_y)*(first.m_y-second.m_y)) + ((first.m_z-second.m_z)
+        *(first.m_z-second.m_z)));
+    }
+    if(length < m_lengths[_index]){
+        std::cout << "SHORTER = " << _index <<'\n';
+        return true;
+    }
+    return false;
+
+    }
+
+void Curve::bulgeLines(int _index){
+
+        std::vector<ngl::Vec3> controlPoints = m_splines[_index]->getControlPoints();
+        ngl::Vec3 midPoint = m_splines[_index]->getPointOnCurve(0.5f);
+        ngl::Mat4 rotational_matrix;
+        ngl::Mat4 reverse_rotational_matrix;
+        float _degrees = 0.5;
+        if(controlPoints[0].m_x==0 && controlPoints[0].m_z > 0){
+            rotational_matrix = ngl::Mat4(1, 0, 0, 0, 0 , cos(_degrees), -sin(_degrees), 0, 0, sin(_degrees), cos(_degrees), 0, 0, 0, 0, 1);
+            reverse_rotational_matrix = ngl::Mat4(1, 0, 0, 0, 0 , cos(-_degrees), -sin(-_degrees), 0, 0, sin(-_degrees), cos(-_degrees), 0, 0, 0, 0, 1);
+            }
+        else if(controlPoints[0].m_x==0 && controlPoints[0].m_z < 0){
+            rotational_matrix = ngl::Mat4(1, 0, 0, 0, 0 , cos(-_degrees), -sin(-_degrees), 0, 0, sin(-_degrees), cos(-_degrees), 0, 0, 0, 0, 1);
+            reverse_rotational_matrix = ngl::Mat4(1, 0, 0, 0, 0 , cos(_degrees), -sin(_degrees), 0, 0, sin(_degrees), cos(_degrees), 0, 0, 0, 0, 1);
+            }
+        else if(controlPoints[0].m_x>0 && controlPoints[0].m_z ==0){
+            rotational_matrix = ngl::Mat4(cos(_degrees), sin(_degrees), 0, 0,-sin(_degrees), cos(_degrees), 0, 0, 0, 0, 1, 0, 0, 0, 0, 1); 
+            reverse_rotational_matrix = ngl::Mat4(cos(_degrees), sin(-_degrees), 0, 0,-sin(-_degrees), cos(-_degrees), 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);           
+            }
+        else if(controlPoints[0].m_x<0 && controlPoints[0].m_z ==0){
+            rotational_matrix = ngl::Mat4(cos(_degrees), sin(-_degrees), 0, 0,-sin(-_degrees), cos(-_degrees), 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);   
+            reverse_rotational_matrix = ngl::Mat4(cos(_degrees), sin(_degrees), 0, 0,-sin(_degrees), cos(_degrees), 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);  
+            }
+            
+            std::shared_ptr<ngl::BezierCurve> centered_line = std::make_shared<ngl::BezierCurve>(); 
+            ngl::Mat4 translation_matrix = ngl::Mat4(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, -midPoint.m_x, -midPoint.m_y, -midPoint.m_z, 1);
+            ngl::Mat4 reverse_translation_matrix = ngl::Mat4(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, midPoint.m_x, midPoint.m_y, midPoint.m_z, 1);
+            for(int i = 0; i < 4; ++i){
+                ngl::Vec4 Vector4 = {{controlPoints[i]}, 1};
+                Vector4 = translation_matrix * Vector4;
+                centered_line->addPoint(Vector4.toVec3());
+            }
+            std::shared_ptr<ngl::BezierCurve> placeholder = std::make_shared<ngl::BezierCurve>(); 
+            std::vector<ngl::Vec3> newcontrolPoints  = centered_line->getControlPoints();
+            placeholder->addPoint(controlPoints[0]);
+                ngl::Vec4 secondPoint = {{newcontrolPoints[1]}, 1};
+                secondPoint = reverse_rotational_matrix * secondPoint;
+                secondPoint = reverse_translation_matrix * secondPoint;
+                placeholder->addPoint(secondPoint.toVec3());
+                ngl::Vec4 thirdPoint = {{newcontrolPoints[2]}, 1};
+                thirdPoint = rotational_matrix * thirdPoint;
+                thirdPoint = reverse_translation_matrix * thirdPoint;
+                placeholder->addPoint(thirdPoint.toVec3());
+            placeholder->addPoint(controlPoints[3]);
+
+            m_splines[_index] = placeholder;
+
 
 }

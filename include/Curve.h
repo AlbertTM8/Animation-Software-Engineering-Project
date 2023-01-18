@@ -31,6 +31,8 @@ std::vector<float> m_lengths;
 void updateIntersections(int _spline);
 void centerMiddlePoints(int _index);
 void followMiddlePoints(int _index);
+bool checkShorter(int _index);
+void bulgeLines(int _index);
 };
 
 
