@@ -271,6 +271,14 @@ void NGLScene::keyPressEvent(QKeyEvent *_event)
     mesh.rotate(-0.1f, axis);
     mesh.resetup(200.0f);
     break;
+  case Qt::Key_T:
+    mesh.transformSquare();
+    mesh.setup(200.0f);
+    break;
+  case Qt::Key_F:
+    mesh.straightenSides();
+    mesh.resetup(200.0f);
+    break;
   default:
     break;
   }

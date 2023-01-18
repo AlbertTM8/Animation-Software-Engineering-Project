@@ -105,6 +105,9 @@ void Curve::rotate(float _degrees, int _axis){
         for(int i = 0; i < 4; ++i){
         updateIntersections(i);
         }
+        for(int i = 4; i<8; ++i){
+        followMiddlePoints(i);
+        }
 
     }
     //Y-Axis
@@ -122,6 +125,9 @@ void Curve::rotate(float _degrees, int _axis){
         }
         for(int i = 0; i < 4; ++i){
         updateIntersections(i);
+        }
+        for(int i = 4; i<8; ++i){
+        followMiddlePoints(i);
         }
     }
     //Z-Axis
@@ -141,6 +147,9 @@ void Curve::rotate(float _degrees, int _axis){
         for(int i = 0; i < 4; ++i){
         updateIntersections(i);
         }
+                for(int i = 4; i<8; ++i){
+        followMiddlePoints(i);
+        }
     }
 
 }
@@ -157,9 +166,13 @@ void Curve::translate(float _x, float _y, float _z){
                 placeholder->addPoint(Vector4.toVec3());
             }
             m_splines[i] = placeholder;
+            
         }
         for(int i = 0; i < 4; ++i){
         updateIntersections(i);
+        }
+        for(int i = 4; i<8; ++i){
+        followMiddlePoints(i);
         }
 }
 
@@ -263,5 +276,59 @@ void Curve::calcLength(){
     m_lengths[a] = length;
     std::cout<< "length of " << a << " is " << m_lengths[a] << '\n';
     }
+
+}
+
+
+void Curve::centerMiddlePoints(int _index){
+        ngl::Vec3 endPoint;
+        ngl::Vec3 startPoint;
+        std::vector<ngl::Vec3>controlPoints;
+
+            controlPoints = m_splines[_index]->getControlPoints();
+            startPoint = controlPoints[0];
+            endPoint = controlPoints[3];
+            std::shared_ptr<ngl::BezierCurve> placeholder = std::make_shared<ngl::BezierCurve>(); 
+            ngl::Vec3 secondPoint = startPoint + ((endPoint-startPoint)*0.33);
+            ngl::Vec3 thirdPoint = startPoint + ((endPoint-startPoint)*0.67);
+            placeholder->addPoint(startPoint);
+            placeholder->addPoint(secondPoint);
+            placeholder->addPoint(thirdPoint);
+            placeholder->addPoint(endPoint);
+            m_splines[_index] = placeholder;
+}
+
+void Curve::transformSquare(){
+
+for(int i = 0; i<m_splines.size(); ++i){
+    centerMiddlePoints(i);
+}
+
+}
+
+void Curve::followMiddlePoints(int _index){
+        ngl::Vec3 endPoint;
+        ngl::Vec3 startPoint;
+        std::vector<ngl::Vec3>controlPoints;
+
+            controlPoints = m_splines[_index]->getControlPoints();
+            startPoint = controlPoints[0];
+            endPoint = controlPoints[3];
+            std::shared_ptr<ngl::BezierCurve> placeholder = std::make_shared<ngl::BezierCurve>(); 
+            ngl::Vec3 secondPoint = m_splines[_index]->getPointOnCurve(0.33f);
+            ngl::Vec3 thirdPoint = m_splines[_index]->getPointOnCurve(0.67f);
+            placeholder->addPoint(startPoint);
+            placeholder->addPoint(secondPoint);
+            placeholder->addPoint(thirdPoint);
+            placeholder->addPoint(endPoint);
+            m_splines[_index] = placeholder;
+}
+
+
+void Curve::straightenSides(){
+
+for(int i = 4; i<8; ++i){
+    centerMiddlePoints(i);
+}
 
 }
