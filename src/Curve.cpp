@@ -107,6 +107,7 @@ void Curve::rotate(float _degrees, int _axis){
         }
         for(int i = 4; i<8; ++i){
         followMiddlePoints(i);
+        bulgeLines(i);
         }
 
     }
@@ -128,6 +129,7 @@ void Curve::rotate(float _degrees, int _axis){
         }
         for(int i = 4; i<8; ++i){
         followMiddlePoints(i);
+        bulgeLines(i);
         }
     }
     //Z-Axis
@@ -149,6 +151,7 @@ void Curve::rotate(float _degrees, int _axis){
         }
                 for(int i = 4; i<8; ++i){
         followMiddlePoints(i);
+        bulgeLines(i);
         }
     }
 
@@ -172,7 +175,7 @@ void Curve::translate(float _x, float _y, float _z){
         updateIntersections(i);
         }
         for(int i = 4; i<8; ++i){
-        centerMiddlePoints(i);
+        followMiddlePoints(i);
         bulgeLines(i);
         }
 }
@@ -350,25 +353,28 @@ bool Curve::checkShorter(int _index){
     }
 
 void Curve::bulgeLines(int _index){
-
+    std::cout<< "BULGING" << '\n';
+//     float rotation = 0.1;
+// while(checkShorter(_index)){
         std::vector<ngl::Vec3> controlPoints = m_splines[_index]->getControlPoints();
         ngl::Vec3 midPoint = m_splines[_index]->getPointOnCurve(0.5f);
         ngl::Mat4 rotational_matrix;
         ngl::Mat4 reverse_rotational_matrix;
-        float _degrees = 0.5;
-        if(controlPoints[0].m_x==0 && controlPoints[0].m_z > 0){
+        float _degrees = 1.0;
+        // rotation += 0.1;
+        if(controlPoints[0].m_z > controlPoints[0].m_x && controlPoints[0].m_z >0){
             rotational_matrix = ngl::Mat4(1, 0, 0, 0, 0 , cos(_degrees), -sin(_degrees), 0, 0, sin(_degrees), cos(_degrees), 0, 0, 0, 0, 1);
             reverse_rotational_matrix = ngl::Mat4(1, 0, 0, 0, 0 , cos(-_degrees), -sin(-_degrees), 0, 0, sin(-_degrees), cos(-_degrees), 0, 0, 0, 0, 1);
             }
-        else if(controlPoints[0].m_x==0 && controlPoints[0].m_z < 0){
+        else if(controlPoints[0].m_z < controlPoints[0].m_x && controlPoints[0].m_z < 0){
             rotational_matrix = ngl::Mat4(1, 0, 0, 0, 0 , cos(-_degrees), -sin(-_degrees), 0, 0, sin(-_degrees), cos(-_degrees), 0, 0, 0, 0, 1);
             reverse_rotational_matrix = ngl::Mat4(1, 0, 0, 0, 0 , cos(_degrees), -sin(_degrees), 0, 0, sin(_degrees), cos(_degrees), 0, 0, 0, 0, 1);
             }
-        else if(controlPoints[0].m_x>0 && controlPoints[0].m_z ==0){
+        else if(controlPoints[0].m_x>controlPoints[0].m_z && controlPoints[0].m_ > 0){
             rotational_matrix = ngl::Mat4(cos(_degrees), sin(_degrees), 0, 0,-sin(_degrees), cos(_degrees), 0, 0, 0, 0, 1, 0, 0, 0, 0, 1); 
             reverse_rotational_matrix = ngl::Mat4(cos(_degrees), sin(-_degrees), 0, 0,-sin(-_degrees), cos(-_degrees), 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);           
             }
-        else if(controlPoints[0].m_x<0 && controlPoints[0].m_z ==0){
+        else if(controlPoints[0].m_x<controlPoints[0].m_z && controlPoints[0].m_x < 0){
             rotational_matrix = ngl::Mat4(cos(_degrees), sin(-_degrees), 0, 0,-sin(-_degrees), cos(-_degrees), 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);   
             reverse_rotational_matrix = ngl::Mat4(cos(_degrees), sin(_degrees), 0, 0,-sin(_degrees), cos(_degrees), 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);  
             }
@@ -395,6 +401,5 @@ void Curve::bulgeLines(int _index){
             placeholder->addPoint(controlPoints[3]);
 
             m_splines[_index] = placeholder;
-
 
 }
