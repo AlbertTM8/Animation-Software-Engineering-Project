@@ -22,17 +22,20 @@ void translate(float _x, float _y, float _z);
 void calcLength();
 void transformSquare();
 void straightenSides();
+void setHullVisibility();
 
 private:
 std::vector<std::shared_ptr<ngl::BezierCurve>> m_splines;
 std::vector<std::vector<std::pair<int, int>>> m_intersections;
 std::vector<Spline> splines;
 std::vector<float> m_lengths; 
+bool hullVisibility = false;
 void updateIntersections(int _spline);
 void centerMiddlePoints(int _index);
 void followMiddlePoints(int _index);
 bool checkShorter(int _index);
 void bulgeLines(int _index);
+
 };
 
 

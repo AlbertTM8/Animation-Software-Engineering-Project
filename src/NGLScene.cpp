@@ -279,6 +279,9 @@ void NGLScene::keyPressEvent(QKeyEvent *_event)
     mesh.straightenSides();
     mesh.resetup(200.0f);
     break;
+  case Qt::Key_C:
+    mesh.setHullVisibility();
+    break;
   default:
     break;
   }
