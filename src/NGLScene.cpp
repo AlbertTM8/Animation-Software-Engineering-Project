@@ -287,3 +287,6 @@ void NGLScene::keyPressEvent(QKeyEvent *_event)
   }
   update();
 }
+
+
+//SCALING
