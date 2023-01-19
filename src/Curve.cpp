@@ -191,6 +191,29 @@ void Curve::translate(float _x, float _y, float _z){
         }
 }
 
+void Curve::scale(float _x, float _y, float _z){
+    const ngl::Mat4 translation_matrix = ngl::Mat4(_x, 0, 0, 0, 0, _x, 0, 0, 0, 0, _z, 0, 0, 0, 0, 1);
+        std::vector<ngl::Vec3> controlPoints;
+        for(int i  = 0; i < 4; ++i){
+            controlPoints = m_splines[i]->getControlPoints();
+            std::shared_ptr<ngl::BezierCurve> placeholder = std::make_shared<ngl::BezierCurve>(); 
+            for(int j = 0; j < 4; ++j){
+                ngl::Vec4 Vector4 = {{controlPoints[j]}, 1};
+                Vector4 = translation_matrix * Vector4;
+                placeholder->addPoint(Vector4.toVec3());
+            }
+            m_splines[i] = placeholder;
+            
+        }
+        for(int i = 0; i < 4; ++i){
+        updateIntersections(i);
+        }
+        for(int i = 4; i<8; ++i){
+        followMiddlePoints(i);
+        bulgeLines(i);
+        }
+}
+
 
 void Curve::calculateIntersections(){
     m_intersections.resize(m_splines.size()*2);
