@@ -24,7 +24,6 @@ void calcLength();
 void transformSquare();
 void straightenSides();
 void setHullVisibility();
-void 
 private:
 std::vector<std::shared_ptr<ngl::BezierCurve>> m_splines;
 std::vector<std::vector<std::pair<int, int>>> m_intersections;

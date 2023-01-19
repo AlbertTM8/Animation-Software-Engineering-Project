@@ -251,6 +251,14 @@ void NGLScene::keyPressEvent(QKeyEvent *_event)
     mesh.translate(0.1f,0.0f, 0.0f);
     mesh.resetup(200.0f);
     break;
+  case Qt::Key_O:
+    mesh.translate(0.0f,0.0f, 0.1f);
+    mesh.resetup(200.0f);
+    break;
+  case Qt::Key_P:
+    mesh.translate(0.0f,0.0f, -0.1f);
+    mesh.resetup(200.0f);
+    break;
   case Qt::Key_X:
     axis = 0;
     std::cout << "Axis = " << axis << '\n';
@@ -282,11 +290,25 @@ void NGLScene::keyPressEvent(QKeyEvent *_event)
   case Qt::Key_C:
     mesh.setHullVisibility();
     break;
+  case Qt::Key_1:
+    mesh.scale(0.9f, 0.0f, 0.0f);
+    mesh.resetup(200.0f);
+    break;
+  case Qt::Key_2:
+    mesh.scale(1.1f, 0.0f, 0.0f);
+    mesh.resetup(200.0f);
+    break;
+  case Qt::Key_3:
+    mesh.scale(0.0f, 0.0f, 0.9f);
+    mesh.resetup(200.0f);
+    break;
+  case Qt::Key_4:
+    mesh.scale(0.0f, 0.0f, 1.1f);
+    mesh.resetup(200.0f);
+    break;
   default:
     break;
+  
   }
   update();
 }
-
-
-//SCALING

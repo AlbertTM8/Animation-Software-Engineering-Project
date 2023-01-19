@@ -192,7 +192,16 @@ void Curve::translate(float _x, float _y, float _z){
 }
 
 void Curve::scale(float _x, float _y, float _z){
-    const ngl::Mat4 translation_matrix = ngl::Mat4(_x, 0, 0, 0, 0, _x, 0, 0, 0, 0, _z, 0, 0, 0, 0, 1);
+    if(_x == 0){
+        _x = 1;
+    }
+    if(_y == 0){
+        _y = 1;
+    }
+    if(_z == 0){
+        _z = 1;
+    }
+    const ngl::Mat4 translation_matrix = ngl::Mat4(_x, 0, 0, 0, 0, _y, 0, 0, 0, 0, _z, 0, 0, 0, 0, 1);
         std::vector<ngl::Vec3> controlPoints;
         for(int i  = 0; i < 4; ++i){
             controlPoints = m_splines[i]->getControlPoints();
