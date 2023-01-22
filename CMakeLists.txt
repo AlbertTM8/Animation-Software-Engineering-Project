@@ -35,7 +35,11 @@ include_directories(include $ENV{HOME}/NGL/include)
 target_sources(CurveNet PRIVATE  ${PROJECT_SOURCE_DIR}/src/main.cpp  
 ${PROJECT_SOURCE_DIR}/src/NGLScene.cpp  
 ${PROJECT_SOURCE_DIR}/include/NGLScene.h  
-src/Segment.cpp include/Segment.h src/Mesh.cpp include/Mesh.h src/Spline.cpp include/Spline.h)
+include/Segments.h 
+src/Mesh.cpp 
+include/Mesh.h 
+src/Spline.cpp 
+include/Spline.h)
 
 target_link_libraries(CurveNet PRIVATE Qt::Widgets Qt::OpenGL NGL)
 
