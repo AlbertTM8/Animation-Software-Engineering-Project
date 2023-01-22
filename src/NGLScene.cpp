@@ -7,7 +7,10 @@
 #include <ngl/VAOPrimitives.h>
 #include <ngl/ShaderLib.h>
 #include <iostream>
-int axis;
+#include <ngl/Util.h>
+#include <chrono>
+
+int g_axis;
 
 NGLScene::NGLScene()
 {
@@ -24,6 +27,7 @@ void NGLScene::resizeGL(int _w, int _h)
   m_project = ngl::perspective(45.0f, static_cast<float>(_w) / _h, 0.05f, 350.0f);
   m_win.width = static_cast<int>(_w * devicePixelRatio());
   m_win.height = static_cast<int>(_h * devicePixelRatio());
+  m_text->setScreenSize(_w,_h);
 }
 
 void NGLScene::initializeGL()
@@ -47,6 +51,8 @@ void NGLScene::initializeGL()
   // set the shape using FOV 45 Aspect Ratio based on Width and Height
   // The final two are near and far clipping planes of 0.5 and 10
   m_project = ngl::perspective(45.0f, 720.0f / 576.0f, 0.5f, 150.0f);
+  //   m_text = std::make_unique<ngl::Text>("fonts/FreeSans.ttf",18);
+  // m_text->setColour(1.0f,1.0f,0.0f);
 
   ngl::ShaderLib::use(ngl::nglColourShader);
   ngl::ShaderLib::setUniform("Colour", 1.0f, 1.0f, 1.0f, 1.0f);
@@ -129,6 +135,10 @@ void NGLScene::paintGL()
   m_mouseGlobalTX.m_m[3][2] = m_modelPos.m_z;
   loadMatricesToShader();
   mesh.draw();
+
+  // auto renderEnd = std::chrono::steady_clock::now();
+  // auto text=fmt::format("Number of particles  Num Active ");
+  // m_text->renderText(10,700,text);
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -260,23 +270,23 @@ void NGLScene::keyPressEvent(QKeyEvent *_event)
     mesh.resetup(200.0f);
     break;
   case Qt::Key_X:
-    axis = 0;
-    std::cout << "Axis = " << axis << '\n';
+    g_axis = 0;
+    std::cout << "Axis = " << g_axis << '\n';
     break;
   case Qt::Key_Y:
-    axis = 1;
-    std::cout << "Axis = " << axis << '\n';
+    g_axis = 1;
+    std::cout << "Axis = " << g_axis << '\n';
     break;
   case Qt::Key_Z:
-    axis = 2;
-    std::cout << "Axis = " << axis << '\n';
+    g_axis = 2;
+    std::cout << "Axis = " << g_axis << '\n';
     break;
   case Qt::Key_R:
-    mesh.rotate(0.1f, axis);
+    mesh.rotate(0.1f, g_axis);
     mesh.resetup(200.0f);
     break;
   case Qt::Key_E:
-    mesh.rotate(-0.1f, axis);
+    mesh.rotate(-0.1f, g_axis);
     mesh.resetup(200.0f);
     break;
   case Qt::Key_T:
@@ -291,19 +301,19 @@ void NGLScene::keyPressEvent(QKeyEvent *_event)
     mesh.setHullVisibility();
     break;
   case Qt::Key_1:
-    mesh.scale(0.9f, 0.0f, 0.0f);
+    mesh.scale(0.9f, 1.0f, 1.0f);
     mesh.resetup(200.0f);
     break;
   case Qt::Key_2:
-    mesh.scale(1.1f, 0.0f, 0.0f);
+    mesh.scale(1.1f, 1.0f, 1.0f);
     mesh.resetup(200.0f);
     break;
   case Qt::Key_3:
-    mesh.scale(0.0f, 0.0f, 0.9f);
+    mesh.scale(1.0f, 1.0f, 0.9f);
     mesh.resetup(200.0f);
     break;
   case Qt::Key_4:
-    mesh.scale(0.0f, 0.0f, 1.1f);
+    mesh.scale(1.0f, 1.0f, 1.1f);
     mesh.resetup(200.0f);
     break;
   default:

@@ -1,60 +1,251 @@
 #include <gtest/gtest.h>
-
-#include "Intersection.h"
-
-// TEST(Intersection, ctor)
-// {   
-//     //input/test values
-//     std::vector<ngl::Vec3> test_tangents = {{1.0f, 0.0f, 0.0f}, {0.0f, 1.0f, 0.0f}, {0.0f, 0.0f, 1.0f}};
-//     std::vector<float> test_lengths = {1.0, 0.2, 1.1};
-//     ngl::Vec3 test_location = {0.0f, 0.0f, 0.0f};
-//     //constructor test
-//     Intersection a(test_tangents, test_lengths, test_location);
-//     ASSERT_EQ(test_tangents, a.getTan());
-//     ASSERT_EQ(test_lengths, a.getLen());
-//     ASSERT_EQ(test_location, a.getLoc());
-// }
+#include "Mesh.h"
 
 
-// TEST(Intersection, CornerCtor)
-// {   //input/test values
-//     std::vector<float> dummy_lengths = {1.0, 0.2, 1.1};
-//     ngl::Vec3 test_location = {1.0f, 2.0f, 3.0f};
-//     std::vector<ngl::Vec3> test_tangents = {{1.0f, 0.0f, 0.0f}, {0.0f, 1.0f, 0.0f}, {0.0f, 0.0f, 1.0f}};
-//     std::vector<Corner> corners_ans = {{{0.0f, 0.0f, 1.0f}, {0.0f, 0.0f, 1.0f}}, {{1.0f, 0.0f, 0.0f}, {1.0f, 0.0f, 0.0f}}, {{0.0f, 1.0f, 0.0f}, {0.0f, 1.0f, 0.0f}}};
-    
-//     //test for corner values with simple numbers
-//     Intersection a(test_tangents, dummy_lengths, test_location);
-//     std::vector<Corner> aCorn= a.getCorn();
-//     for(int i = 0; i<3; ++i){
-//     ASSERT_EQ(corners_ans[i].CornerVec, aCorn[i].CornerVec);
-//     ASSERT_EQ(corners_ans[i].CornerNorm, aCorn[i].CornerNorm);
-//     }
+TEST(Mesh, ctor)
+{   
+    //input/test values
+   std::vector<ngl::Vec3> test_curves = {{1.0f, 1.0f, 0.0f}, {1.0f, 0.75f, 0.0f}, {1.0f, 0.25f, 0.0f}, {1.0f, 0.0f, 0.0f}};
+   Mesh a;
+   a.addPoint(ngl::Vec3(1.0f, 1.0f, 0.0f), 0);
+   a.addPoint(ngl::Vec3(1.0f, 0.75f, 0.0f), 0);
+   a.addPoint(ngl::Vec3(1.0f, 0.25f, 0.0f), 0);
+   a.addPoint(ngl::Vec3(1.0f, 0.0f, 0.0f), 0);
+   a.addPoint(ngl::Vec3(0.0f, 0.0f, 1.0f), 1);
+   a.addPoint(ngl::Vec3(0.0f, 0.25f, 1.0f), 1);
+   a.addPoint(ngl::Vec3(0.0f, 0.75f, 1.0f), 1);
+   a.addPoint(ngl::Vec3(0.0f, 1.0f, 1.0f), 1);
 
-//     //more specific values
-//     test_tangents = {{1.2f, 1.0f, 0.0f}, {0.8f, 1.0f, 0.5f}, {0.6f, 0.1f, 1.8f}};
-//     corners_ans = {{{0.5f, -0.6f, 0.4f}, {0.569802882, -0.68376345, 0.45584230}}, {{1.75f, -1.14f, -0.52f}, {0.81307448f, -0.52965995f, -0.24159927f}}, {{-1.8f, 2.16f, 0.48f}, {-0.63105474f, 0.75726569f, 0.16828136f}}};
-//     //Test for Corner Values with more specific numbers
-//     Intersection b(test_tangents, dummy_lengths, test_location);
-//     std::vector<Corner> bCorn= b.getCorn();
-//     for(int i = 0; i<3; ++i){
-//     ASSERT_EQ(corners_ans[i].CornerVec, bCorn[i].CornerVec);
-//     ASSERT_EQ(corners_ans[i].CornerNorm, bCorn[i].CornerNorm);
-//     }
-// }
+    ASSERT_EQ(test_curves, a.getSpline(0));
+    test_curves = {{0.0f, 0.0f, 1.0f}, {0.0f, 0.25f, 1.0f}, {0.0f, 0.75f, 1.0f}, {0.0f, 1.0f, 1.0f}};
+    ASSERT_EQ(test_curves, a.getSpline(1));
+}
 
- TEST(Intersection, CornerNorms)
- {   
-    //input values
-    std::vector<float> dummy_lengths = {1.0, 0.2, 1.1};
-    ngl::Vec3 test_location = {1.0f, 2.0f, 3.0f};
-    std::vector<ngl::Vec3> test_tangents = {{1.2f, 1.0f, 0.0f}, {0.8f, 1.0f, 0.5f}, {0.6f, 0.1f, 1.8f}};
-    std::vector<std::pair<ngl::Vec3, ngl::Vec3>> normals_ans = {{{0.569802882, -0.68376345, 0.45584230}, {-0.63105474f, 0.75726569f, 0.16828136f}}, {{0.81307448f, -0.52965995f, -0.24159927f}, {0.569802882, -0.68376345, 0.45584230}}, {{-0.63105474f, 0.75726569f, 0.16828136f}, {0.81307448f, -0.52965995f, -0.24159927f}}};
-    //Test for Normal Values 
-    Intersection a(test_tangents, dummy_lengths, test_location);
-    std::vector<std::pair<ngl::Vec3, ngl::Vec3>> anormals= a.getNorms();
-    ASSERT_EQ(anormals, normals_ans);
+TEST(Mesh, intersections)
+{   
+    //input/test values
+   std::vector<std::pair<int, int>> test_curves = {std::make_pair<int, int>(0, 0), std::make_pair<int, int>(1, 0), std::make_pair<int, int>(2, 3)};
+   Mesh a;
+   a.addPoint(ngl::Vec3(1.0f, 1.0f, 0.0f), 0);
+   a.addPoint(ngl::Vec3(1.0f, 0.75f, 0.0f), 0);
+   a.addPoint(ngl::Vec3(1.0f, 0.25f, 0.0f), 0);
+   a.addPoint(ngl::Vec3(1.0f, 0.0f, 0.0f), 0);
+   a.addPoint(ngl::Vec3(1.0f, 1.0f, 0.0f), 1);
+   a.addPoint(ngl::Vec3(0.0f, 0.25f, 1.0f), 1);
+   a.addPoint(ngl::Vec3(0.0f, 0.75f, 1.0f), 1);
+   a.addPoint(ngl::Vec3(0.0f, 1.0f, 1.0f), 1);
+   a.addPoint(ngl::Vec3(0.0f, 1.0f, 0.0f), 2);
+   a.addPoint(ngl::Vec3(0.25f, 1.0f, 0.0f), 2);
+   a.addPoint(ngl::Vec3(0.75f, 1.0f, 0.0f), 2);
+   a.addPoint(ngl::Vec3(1.0f, 1.0f, 0.0f), 2);
+    a.calculateIntersections();
+    ASSERT_EQ(test_curves, a.getIntersections(0));
 
- }
+}
+
+TEST(Mesh, lengths)
+{   
+
+   float testLength = 1.0f;
+   Mesh a;
+   a.addPoint(ngl::Vec3(1.0f, 1.0f, 0.0f), 0);
+   a.addPoint(ngl::Vec3(1.0f, 0.75f, 0.0f), 0);
+   a.addPoint(ngl::Vec3(1.0f, 0.25f, 0.0f), 0);
+   a.addPoint(ngl::Vec3(1.0f, 0.0f, 0.0f), 0);
+    a.calcLength();
+    EXPECT_NEAR(testLength, 1.0f, 0.01);
+
+}
+
+TEST(Mesh, translation)
+{   
+
+   std::vector<ngl::Vec3> testPoints = {{1.1f, 1.0f, 0.0f}, {0.85f, 1.0f, 0.0f}, {0.35f, 1.0f, 0.0f} ,{0.1f, 1.0f, 0.0f}};
+
+   Mesh a;
+    a.addPoint(ngl::Vec3(1.0f, 1.0f, 0.0f), 0);
+    a.addPoint(ngl::Vec3(0.75f, 1.0f, 0.0f), 0);
+    a.addPoint(ngl::Vec3(0.25f, 1.0f, 0.0f), 0);
+    a.addPoint(ngl::Vec3(0.0f, 1.0f, 0.0f), 0);
+    a.addPoint(ngl::Vec3(1.0f, 1.0f, 1.0f), 1);
+    a.addPoint(ngl::Vec3(0.75f, 1.0f, 1.0f), 1);
+    a.addPoint(ngl::Vec3(0.25f, 1.0f, 1.0f), 1);
+    a.addPoint(ngl::Vec3(0.0f, 1.0f, 1.0f), 1);
+    a.addPoint(ngl::Vec3(0.0f, 1.0f, 1.0f),2);
+    a.addPoint(ngl::Vec3(0.0f, 1.0f, 0.75f), 2);
+    a.addPoint(ngl::Vec3(0.0f, 1.0f, 0.25f), 2);
+    a.addPoint(ngl::Vec3(0.0f, 1.0f, 0.0f), 2);
+    a.addPoint(ngl::Vec3(1.0f, 1.0f, 1.0f), 3);
+    a.addPoint(ngl::Vec3(1.0f, 1.0f, 0.75f), 3);
+    a.addPoint(ngl::Vec3(1.0f, 1.0f, 0.25f), 3);
+    a.addPoint(ngl::Vec3(1.0f, 1.0f, 0.0f), 3);
+    a.addPoint(ngl::Vec3(1.0f, 1.0f, 0.0f), 4);
+    a.addPoint(ngl::Vec3(1.0f, 0.75f, 0.0f), 4);
+    a.addPoint(ngl::Vec3(1.0f, 0.25f, 0.0f), 4);
+    a.addPoint(ngl::Vec3(1.0f, 0.0f, 0.0f), 4);
+    a.addPoint(ngl::Vec3(1.0f, 1.0f, 1.0f), 5);
+    a.addPoint(ngl::Vec3(1.0f, 0.75f, 1.0f), 5);
+    a.addPoint(ngl::Vec3(1.0f, 0.25f, 1.0f), 5);
+    a.addPoint(ngl::Vec3(1.0f, 0.0f, 1.0f), 5);
+    a.addPoint(ngl::Vec3(0.0f, 1.0f, 1.0f), 6);
+    a.addPoint(ngl::Vec3(0.0f, 0.75f, 1.0f), 6);
+    a.addPoint(ngl::Vec3(0.0f, 0.25f, 1.0f), 6);
+    a.addPoint(ngl::Vec3(0.0f, 0.0f, 1.0f), 6);
+    a.addPoint(ngl::Vec3(0.0f, 1.0f, 0.0f), 7);
+    a.addPoint(ngl::Vec3(0.0f, 0.75f, 0.0f), 7);
+    a.addPoint(ngl::Vec3(0.0f, 0.25f, 0.0f), 7);
+    a.addPoint(ngl::Vec3(0.0f, 0.0f, 0.0f), 7);
+    a.addPoint(ngl::Vec3(1.0f, 0.0f, 0.0f), 8);
+    a.addPoint(ngl::Vec3(0.75f, 0.0f, 0.0f), 8);
+    a.addPoint(ngl::Vec3(0.25f, 0.0f, 0.0f), 8);
+    a.addPoint(ngl::Vec3(0.0f, 0.0f, 0.0f), 8);
+    a.addPoint(ngl::Vec3(1.0f, 0.0f, 1.0f), 9);
+    a.addPoint(ngl::Vec3(0.75f, 0.0f, 1.0f), 9);
+    a.addPoint(ngl::Vec3(0.25f, 0.0f, 1.0f), 9);
+    a.addPoint(ngl::Vec3(0.0f, 0.0f, 1.0f), 9);
+    a.addPoint(ngl::Vec3(0.0f, 0.0f, 1.0f),10);
+    a.addPoint(ngl::Vec3(0.0f, 0.0f, 0.75f), 10);
+    a.addPoint(ngl::Vec3(0.0f, 0.0f, 0.25f), 10);
+    a.addPoint(ngl::Vec3(0.0f, 0.0f, 0.0f), 10);
+    a.addPoint(ngl::Vec3(1.0f, 0.0f, 1.0f), 11);
+    a.addPoint(ngl::Vec3(1.0f, 0.0f, 0.75f), 11);
+    a.addPoint(ngl::Vec3(1.0f, 0.0f, 0.25f), 11);
+    a.addPoint(ngl::Vec3(1.0f, 0.0f, 0.0f), 11);
+    a.calculateIntersections();
+    a.calcLength();
+    a.translate(0.1f, 0.0f, 0.0f);
+    ASSERT_EQ(testPoints, a.getSpline(0));
+    a.translate(0.0f, 0.1f, 0.0f);
+    testPoints = {{1.1f, 1.1f, 1.0f}, {1.1f, 1.1f, 0.75f}, {1.1f, 1.1f, 0.25f} ,{1.1f, 1.1f, 0.0f}};
+    ASSERT_EQ(testPoints, a.getSpline(3));
+    a.translate(0.0f, 0.1f, 0.1f);
+    testPoints = {{1.1f, 1.2f, 1.1f}, {1.1f, 1.2f, 0.85f}, {1.1f, 1.2f, 0.35f} ,{1.1f, 1.2f, 0.1f}};
+    ASSERT_EQ(testPoints, a.getSpline(3));
+}
+TEST(Mesh, rotation)
+{   
+
+   std::vector<ngl::Vec3> testPoints = {{1.0f, 0.0f, 1.0f}, {0.75f, 0.0f, 1.0f}, {0.25f, 0.0f, 1.0f} ,{0.0f, 0.0f, 1.0f}};
+
+   Mesh a;
+    a.addPoint(ngl::Vec3(1.0f, 1.0f, 0.0f), 0);
+    a.addPoint(ngl::Vec3(0.75f, 1.0f, 0.0f), 0);
+    a.addPoint(ngl::Vec3(0.25f, 1.0f, 0.0f), 0);
+    a.addPoint(ngl::Vec3(0.0f, 1.0f, 0.0f), 0);
+    a.addPoint(ngl::Vec3(1.0f, 1.0f, 1.0f), 1);
+    a.addPoint(ngl::Vec3(0.75f, 1.0f, 1.0f), 1);
+    a.addPoint(ngl::Vec3(0.25f, 1.0f, 1.0f), 1);
+    a.addPoint(ngl::Vec3(0.0f, 1.0f, 1.0f), 1);
+    a.addPoint(ngl::Vec3(0.0f, 1.0f, 1.0f),2);
+    a.addPoint(ngl::Vec3(0.0f, 1.0f, 0.75f), 2);
+    a.addPoint(ngl::Vec3(0.0f, 1.0f, 0.25f), 2);
+    a.addPoint(ngl::Vec3(0.0f, 1.0f, 0.0f), 2);
+    a.addPoint(ngl::Vec3(1.0f, 1.0f, 1.0f), 3);
+    a.addPoint(ngl::Vec3(1.0f, 1.0f, 0.75f), 3);
+    a.addPoint(ngl::Vec3(1.0f, 1.0f, 0.25f), 3);
+    a.addPoint(ngl::Vec3(1.0f, 1.0f, 0.0f), 3);
+    a.addPoint(ngl::Vec3(1.0f, 1.0f, 0.0f), 4);
+    a.addPoint(ngl::Vec3(1.0f, 0.75f, 0.0f), 4);
+    a.addPoint(ngl::Vec3(1.0f, 0.25f, 0.0f), 4);
+    a.addPoint(ngl::Vec3(1.0f, 0.0f, 0.0f), 4);
+    a.addPoint(ngl::Vec3(1.0f, 1.0f, 1.0f), 5);
+    a.addPoint(ngl::Vec3(1.0f, 0.75f, 1.0f), 5);
+    a.addPoint(ngl::Vec3(1.0f, 0.25f, 1.0f), 5);
+    a.addPoint(ngl::Vec3(1.0f, 0.0f, 1.0f), 5);
+    a.addPoint(ngl::Vec3(0.0f, 1.0f, 1.0f), 6);
+    a.addPoint(ngl::Vec3(0.0f, 0.75f, 1.0f), 6);
+    a.addPoint(ngl::Vec3(0.0f, 0.25f, 1.0f), 6);
+    a.addPoint(ngl::Vec3(0.0f, 0.0f, 1.0f), 6);
+    a.addPoint(ngl::Vec3(0.0f, 1.0f, 0.0f), 7);
+    a.addPoint(ngl::Vec3(0.0f, 0.75f, 0.0f), 7);
+    a.addPoint(ngl::Vec3(0.0f, 0.25f, 0.0f), 7);
+    a.addPoint(ngl::Vec3(0.0f, 0.0f, 0.0f), 7);
+    a.addPoint(ngl::Vec3(1.0f, 0.0f, 0.0f), 8);
+    a.addPoint(ngl::Vec3(0.75f, 0.0f, 0.0f), 8);
+    a.addPoint(ngl::Vec3(0.25f, 0.0f, 0.0f), 8);
+    a.addPoint(ngl::Vec3(0.0f, 0.0f, 0.0f), 8);
+    a.addPoint(ngl::Vec3(1.0f, 0.0f, 1.0f), 9);
+    a.addPoint(ngl::Vec3(0.75f, 0.0f, 1.0f), 9);
+    a.addPoint(ngl::Vec3(0.25f, 0.0f, 1.0f), 9);
+    a.addPoint(ngl::Vec3(0.0f, 0.0f, 1.0f), 9);
+    a.addPoint(ngl::Vec3(0.0f, 0.0f, 1.0f),10);
+    a.addPoint(ngl::Vec3(0.0f, 0.0f, 0.75f), 10);
+    a.addPoint(ngl::Vec3(0.0f, 0.0f, 0.25f), 10);
+    a.addPoint(ngl::Vec3(0.0f, 0.0f, 0.0f), 10);
+    a.addPoint(ngl::Vec3(1.0f, 0.0f, 1.0f), 11);
+    a.addPoint(ngl::Vec3(1.0f, 0.0f, 0.75f), 11);
+    a.addPoint(ngl::Vec3(1.0f, 0.0f, 0.25f), 11);
+    a.addPoint(ngl::Vec3(1.0f, 0.0f, 0.0f), 11);
+    a.calculateIntersections();
+    a.calcLength();
+    a.rotate(-1.5708f, 0);
+    ASSERT_EQ(testPoints, a.getSpline(0));
+    a.rotate(3.14159f, 0);
+    testPoints = {{1.0f, 0.0f, -1.0f}, {0.75f, 0.0f, -1.0f}, {0.25f, 0.0f, -1.0f} ,{0.0f, 0.0f, -1.0f}};
+    ASSERT_EQ(testPoints, a.getSpline(0));
+}
+
+TEST(Mesh, scaling)
+{   
+
+   std::vector<ngl::Vec3> testPoints = {{1.0f, 1.0f, 1.1f}, {0.75f, 1.0f, 1.1f}, {0.25f, 1.0f, 1.1f} ,{0.0f, 1.0f, 1.1f}};
 
 
+   Mesh a;
+    a.addPoint(ngl::Vec3(1.0f, 1.0f, 0.0f), 0);
+    a.addPoint(ngl::Vec3(0.75f, 1.0f, 0.0f), 0);
+    a.addPoint(ngl::Vec3(0.25f, 1.0f, 0.0f), 0);
+    a.addPoint(ngl::Vec3(0.0f, 1.0f, 0.0f), 0);
+    a.addPoint(ngl::Vec3(1.0f, 1.0f, 1.0f), 1);
+    a.addPoint(ngl::Vec3(0.75f, 1.0f, 1.0f), 1);
+    a.addPoint(ngl::Vec3(0.25f, 1.0f, 1.0f), 1);
+    a.addPoint(ngl::Vec3(0.0f, 1.0f, 1.0f), 1);
+    a.addPoint(ngl::Vec3(0.0f, 1.0f, 1.0f),2);
+    a.addPoint(ngl::Vec3(0.0f, 1.0f, 0.75f), 2);
+    a.addPoint(ngl::Vec3(0.0f, 1.0f, 0.25f), 2);
+    a.addPoint(ngl::Vec3(0.0f, 1.0f, 0.0f), 2);
+    a.addPoint(ngl::Vec3(1.0f, 1.0f, 1.0f), 3);
+    a.addPoint(ngl::Vec3(1.0f, 1.0f, 0.75f), 3);
+    a.addPoint(ngl::Vec3(1.0f, 1.0f, 0.25f), 3);
+    a.addPoint(ngl::Vec3(1.0f, 1.0f, 0.0f), 3);
+    a.addPoint(ngl::Vec3(1.0f, 1.0f, 0.0f), 4);
+    a.addPoint(ngl::Vec3(1.0f, 0.75f, 0.0f), 4);
+    a.addPoint(ngl::Vec3(1.0f, 0.25f, 0.0f), 4);
+    a.addPoint(ngl::Vec3(1.0f, 0.0f, 0.0f), 4);
+    a.addPoint(ngl::Vec3(1.0f, 1.0f, 1.0f), 5);
+    a.addPoint(ngl::Vec3(1.0f, 0.75f, 1.0f), 5);
+    a.addPoint(ngl::Vec3(1.0f, 0.25f, 1.0f), 5);
+    a.addPoint(ngl::Vec3(1.0f, 0.0f, 1.0f), 5);
+    a.addPoint(ngl::Vec3(0.0f, 1.0f, 1.0f), 6);
+    a.addPoint(ngl::Vec3(0.0f, 0.75f, 1.0f), 6);
+    a.addPoint(ngl::Vec3(0.0f, 0.25f, 1.0f), 6);
+    a.addPoint(ngl::Vec3(0.0f, 0.0f, 1.0f), 6);
+    a.addPoint(ngl::Vec3(0.0f, 1.0f, 0.0f), 7);
+    a.addPoint(ngl::Vec3(0.0f, 0.75f, 0.0f), 7);
+    a.addPoint(ngl::Vec3(0.0f, 0.25f, 0.0f), 7);
+    a.addPoint(ngl::Vec3(0.0f, 0.0f, 0.0f), 7);
+    a.addPoint(ngl::Vec3(1.0f, 0.0f, 0.0f), 8);
+    a.addPoint(ngl::Vec3(0.75f, 0.0f, 0.0f), 8);
+    a.addPoint(ngl::Vec3(0.25f, 0.0f, 0.0f), 8);
+    a.addPoint(ngl::Vec3(0.0f, 0.0f, 0.0f), 8);
+    a.addPoint(ngl::Vec3(1.0f, 0.0f, 1.0f), 9);
+    a.addPoint(ngl::Vec3(0.75f, 0.0f, 1.0f), 9);
+    a.addPoint(ngl::Vec3(0.25f, 0.0f, 1.0f), 9);
+    a.addPoint(ngl::Vec3(0.0f, 0.0f, 1.0f), 9);
+    a.addPoint(ngl::Vec3(0.0f, 0.0f, 1.0f),10);
+    a.addPoint(ngl::Vec3(0.0f, 0.0f, 0.75f), 10);
+    a.addPoint(ngl::Vec3(0.0f, 0.0f, 0.25f), 10);
+    a.addPoint(ngl::Vec3(0.0f, 0.0f, 0.0f), 10);
+    a.addPoint(ngl::Vec3(1.0f, 0.0f, 1.0f), 11);
+    a.addPoint(ngl::Vec3(1.0f, 0.0f, 0.75f), 11);
+    a.addPoint(ngl::Vec3(1.0f, 0.0f, 0.25f), 11);
+    a.addPoint(ngl::Vec3(1.0f, 0.0f, 0.0f), 11);
+    a.calculateIntersections();
+    a.calcLength();
+    a.scale(0.0f, 0.0f, 1.1f);
+    ASSERT_EQ(testPoints, a.getSpline(1));
+
+}
+
+
+//   mesh.scale(0.9f, 0.0f, 0.0f);

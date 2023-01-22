@@ -35,20 +35,22 @@ include_directories(include $ENV{HOME}/NGL/include)
 target_sources(CurveNet PRIVATE  ${PROJECT_SOURCE_DIR}/src/main.cpp  
 ${PROJECT_SOURCE_DIR}/src/NGLScene.cpp  
 ${PROJECT_SOURCE_DIR}/include/NGLScene.h  
-src/Segment.cpp include/Segment.h src/Curve.cpp include/Curve.h src/Spline.cpp include/Spline.h)
+src/Segment.cpp include/Segment.h src/Mesh.cpp include/Mesh.h src/Spline.cpp include/Spline.h)
 target_link_libraries(CurveNet PRIVATE Qt::Widgets Qt::OpenGL NGL)
 
-# #Add testing stuff
+#Add testing stuff
 
-# find_package(GTest CONFIG REQUIRED)
-# include(GoogleTest)
-# enable_testing()
-# add_executable(MathTest)
-# include_directories(include)
-# target_sources(MathTest PRIVATE tests/Test.cpp
-# ${CMAKE_SOURCE_DIR}/include/Intersection.h
-# ${CMAKE_SOURCE_DIR}/src/Intersection.cpp
-# ${CMAKE_SOURCE_DIR}/include/Segment.h
-# ${CMAKE_SOURCE_DIR}/src/Segment.cpp) 
-# target_link_libraries(MathTest PRIVATE GTest::gtest GTest::gtest_main)
-# gtest_discover_tests(MathTest)
+find_package(GTest CONFIG REQUIRED)
+include(GoogleTest)
+enable_testing()
+add_executable(MathTest)
+include_directories(include)
+target_sources(MathTest PRIVATE tests/Test.cpp
+${CMAKE_SOURCE_DIR}/include/Mesh.h
+${CMAKE_SOURCE_DIR}/src/Mesh.cpp
+${CMAKE_SOURCE_DIR}/include/Spline.h
+${CMAKE_SOURCE_DIR}/src/Spline.cpp
+${CMAKE_SOURCE_DIR}/include/Segments.h
+) 
+target_link_libraries(MathTest PRIVATE GTest::gtest GTest::gtest_main)
+gtest_discover_tests(MathTest)
