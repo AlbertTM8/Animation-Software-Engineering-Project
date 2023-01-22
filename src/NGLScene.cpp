@@ -143,7 +143,7 @@ void NGLScene::paintGL()
   m_text->renderText(10,680,scaling_text);
   auto rotate_text=fmt::format("Press X/Y/Z for axis, and E and R to rotate");
   m_text->renderText(10,660,rotate_text);
-  auto square_text=fmt::format("Press T for a square, and F to straighten side curves");
+  auto square_text=fmt::format("Press T for a cube, and F to straighten side curves");
   m_text->renderText(10,640,square_text);
   auto hull_text=fmt::format("Press C to toggle hull visibilty");
   m_text->renderText(10,620,hull_text);
