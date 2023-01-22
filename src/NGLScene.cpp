@@ -51,8 +51,9 @@ void NGLScene::initializeGL()
   // set the shape using FOV 45 Aspect Ratio based on Width and Height
   // The final two are near and far clipping planes of 0.5 and 10
   m_project = ngl::perspective(45.0f, 720.0f / 576.0f, 0.5f, 150.0f);
-  //   m_text = std::make_unique<ngl::Text>("fonts/FreeSans.ttf",18);
-  // m_text->setColour(1.0f,1.0f,0.0f);
+
+  m_text = std::make_unique<ngl::Text>("fonts/FreeSans.ttf", 18);
+  m_text->setColour(1.0f, 1.0f, 0.0f);
 
   ngl::ShaderLib::use(ngl::nglColourShader);
   ngl::ShaderLib::setUniform("Colour", 1.0f, 1.0f, 1.0f, 1.0f);
@@ -136,9 +137,16 @@ void NGLScene::paintGL()
   loadMatricesToShader();
   mesh.draw();
 
-  // auto renderEnd = std::chrono::steady_clock::now();
-  // auto text=fmt::format("Number of particles  Num Active ");
-  // m_text->renderText(10,700,text);
+  auto translate_text=fmt::format("Press W/A/S/D/O/P to translate");
+  m_text->renderText(10,700,translate_text);
+  auto scaling_text=fmt::format("Press 1/2/3/4 for scaling in x and z");
+  m_text->renderText(10,680,scaling_text);
+  auto rotate_text=fmt::format("Press X/Y/Z for axis, and E and R to rotate");
+  m_text->renderText(10,660,rotate_text);
+  auto square_text=fmt::format("Press T for a square, and F to straighten side curves");
+  m_text->renderText(10,640,square_text);
+  auto hull_text=fmt::format("Press C to toggle hull visibilty");
+  m_text->renderText(10,620,hull_text);
 }
 
 //----------------------------------------------------------------------------------------------------------------------
