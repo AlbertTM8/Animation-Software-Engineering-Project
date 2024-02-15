@@ -1,4 +1,7 @@
 # Albert Jian Sheng Tan-Mulligan Assigment
+
+FOR MESH AND SPLINE .CPP FILES, LOOK IN SRC FOLDER. HEADER FILES ARE IN INCLUDE.
+
 [ProgramInOperation_s5531049.webm](https://github.com/AlbertTM8/Animation-Software-Engineering-Project/assets/115167346/68e84a58-f2ca-46bb-b190-dcd593680d59)
 
 ## How To Use The Program
